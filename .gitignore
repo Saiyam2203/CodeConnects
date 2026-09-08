@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment variables (do not commit secrets)
+.env
+.env.*
+!.env.example
+*.env
+
+# Build output
+build/
+dist/
+client/dist/
+
+# Local preparation & notes (keep local, do not push)
+INTERVIEW_PREPARATION.md
+*.tmp
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE & editors
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
