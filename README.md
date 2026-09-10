@@ -240,6 +240,66 @@ cd client && npm run dev
 
 ---
 
+### 🐳 Run with Docker (recommended)
+
+No local Node.js/MySQL needed. Builds `client` (nginx), `server` (node), and `db` (MySQL 8 with schema + seed auto-loaded).
+
+```bash
+# Start everything
+docker compose up --build -d
+
+# Watch backend wait for MySQL, then go live
+docker logs -f codeconnects-server
+```
+
+- **Frontend**: http://localhost:5173 (nginx serves the build, proxies `/api/*` to backend)
+- **Backend API**: http://localhost:5000/api/health
+- **Seed logins**: e.g. `alex@codeconnects.dev` / `Password123!`
+
+```bash
+# Stop / reset
+docker compose down            # keep DB data
+docker compose down -v         # wipe DB data (reseeds on next up)
+```
+
+Override defaults (`DB_PASSWORD`, `DB_NAME`, `JWT_SECRET`) via a `.env` file next to `docker-compose.yml` — see `.env.example`.
+
+---
+
+## 📸 Screenshots
+
+### Landing & Authentication
+
+<p align="center">
+  <img src="docs/screenshots/01-landing.png" width="48%" alt="CodeConnects Landing Page">
+  <img src="docs/screenshots/02-login.png" width="48%" alt="CodeConnects Login Page">
+</p>
+
+### Feed & Projects
+
+<p align="center">
+  <img src="docs/screenshots/03-feed.png" width="48%" alt="CodeConnects Feed">
+  <img src="docs/screenshots/04-projects-all.png" width="48%" alt="CodeConnects Projects">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/05-projects-my.png" width="48%" alt="CodeConnects My Projects">
+  <img src="docs/screenshots/06-search.png" width="48%" alt="CodeConnects Search">
+</p>
+
+### Connections & Profile
+
+<p align="center">
+  <img src="docs/screenshots/07-connections-following.png" width="48%" alt="CodeConnects Following">
+  <img src="docs/screenshots/08-connections-followers.png" width="48%" alt="CodeConnects Followers">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/09-profile.png" width="60%" alt="CodeConnects Profile">
+</p>
+
+---
+
 ## 🔑 Sample Login Credentials
 
 All seed users share the same password: `Password123!`
