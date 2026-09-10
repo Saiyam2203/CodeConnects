@@ -12,9 +12,10 @@ const projectRoutes = require('./routes/projectRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Middleware - CORS origins configurable via CORS_ORIGIN (comma-separated) for Docker support
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',').map((s) => s.trim()).filter(Boolean);
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
   credentials: true
 }));
 app.use(express.json());
