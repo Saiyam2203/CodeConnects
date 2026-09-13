@@ -76,7 +76,10 @@ export default function ProjectsPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1 className="page-title">Projects</h1>
+        <div>
+          <h1 className="page-title">Project Showcase</h1>
+          <p className="page-subtitle">Discover what the community is building.</p>
+        </div>
         <button className="btn btn-primary" onClick={() => setShowForm(true)}>
           + Add Project
         </button>

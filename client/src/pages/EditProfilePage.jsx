@@ -48,7 +48,10 @@ export default function EditProfilePage() {
   return (
     <div className="page-container" style={{ maxWidth: '600px' }}>
       <div className="page-header">
-        <h1 className="page-title">Edit Profile</h1>
+        <div>
+          <h1 className="page-title">Edit Profile</h1>
+          <p className="page-subtitle">Update your bio, skills and links.</p>
+        </div>
       </div>
 
       <div className="card">

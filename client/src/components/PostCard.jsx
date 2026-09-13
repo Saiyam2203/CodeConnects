@@ -6,6 +6,47 @@ import Avatar from './Avatar';
 import CommentSection from './CommentSection';
 import { formatDate } from '../utils/helpers';
 
+function HeartIcon({ filled }) {
+  return (
+    <svg viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+    </svg>
+  );
+}
+
+function CommentIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
+
+function ShareIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" />
+    </svg>
+  );
+}
+
+function formatCount(n) {
+  const num = Number(n) || 0;
+  if (num >= 1000) return `${(num / 1000).toFixed(1).replace(/\.0$/, '')}k`;
+  return `${num}`;
+}
+
+/** Render #hashtags in accent blue like the reference */
+function renderContent(content) {
+  if (!content) return null;
+  const parts = content.split(/(#[\w-]+)/g);
+  return parts.map((p, i) =>
+    p.startsWith('#') && p.length > 1
+      ? <span key={i} className="hashtag">{p}</span>
+      : <span key={i}>{p}</span>
+  );
+}
+
 export default function PostCard({ post, onPostUpdated, onPostDeleted }) {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -81,8 +122,9 @@ export default function PostCard({ post, onPostUpdated, onPostDeleted }) {
             <button
               className="btn btn-ghost btn-icon"
               onClick={() => setShowMenu(!showMenu)}
+              aria-label="Post options"
             >
-              ⋯
+              ⋮
             </button>
             {showMenu && (
               <div className="post-menu-dropdown">
@@ -121,21 +163,34 @@ export default function PostCard({ post, onPostUpdated, onPostDeleted }) {
           </div>
         </div>
       ) : (
-        <div className="post-content">{post.content}</div>
+        <div className="post-content">{renderContent(post.content)}</div>
       )}
 
       <div className="post-actions">
         <button
           className={`post-action-btn ${liked ? 'liked' : ''}`}
           onClick={handleLike}
+          aria-label="Like post"
         >
-          {liked ? '❤️' : '🤍'} {likesCount}
+          <HeartIcon filled={liked} /> {formatCount(likesCount)}
         </button>
         <button
           className="post-action-btn"
           onClick={() => setShowComments(!showComments)}
+          aria-label="Toggle comments"
         >
-          💬 {commentsCount}
+          <CommentIcon /> {formatCount(commentsCount)}
+        </button>
+        <button
+          className="post-action-btn post-share-btn"
+          title="Share (copies link)"
+          onClick={() => {
+            const url = `${window.location.origin}/feed#post-${post.id}`;
+            navigator.clipboard?.writeText(url).catch(() => {});
+          }}
+          aria-label="Share post"
+        >
+          <ShareIcon />
         </button>
       </div>
 

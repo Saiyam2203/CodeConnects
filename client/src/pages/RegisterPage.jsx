@@ -52,12 +52,12 @@ export default function RegisterPage() {
   return (
     <div className="auth-page">
       <div className="auth-card slide-up">
-        <Link to="/" className="navbar-brand" style={{ justifyContent: 'center', marginBottom: '24px' }}>
-          <div className="brand-icon">⚡</div>
-          CodeConnects
+        <Link to="/" className="auth-brand">
+          <span className="brand-icon" style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #1899f2, #0c85d8)', borderRadius: '11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '15px' }}>&lt;/&gt;</span>
+          CodeConnect
         </Link>
-        <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join the developer community</p>
+        <h1 className="auth-title">Join CodeConnect 🚀</h1>
+        <p className="auth-subtitle">Create your developer profile in seconds</p>
 
         {error && <ErrorMessage message={error} />}
 

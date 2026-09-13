@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { userService, postService, projectService } from '../services/dataService';
 import { useAuth } from '../hooks/useAuth';
 import Avatar from '../components/Avatar';
@@ -52,11 +52,11 @@ export default function ProfilePage() {
       if (isFollowing) {
         await userService.unfollowUser(id);
         setIsFollowing(false);
-        setProfile(prev => ({ ...prev, followers_count: prev.followers_count - 1 }));
+        setProfile(prev => ({ ...prev, followers_count: (prev.followers_count || 1) - 1 }));
       } else {
         await userService.followUser(id);
         setIsFollowing(true);
-        setProfile(prev => ({ ...prev, followers_count: prev.followers_count + 1 }));
+        setProfile(prev => ({ ...prev, followers_count: (prev.followers_count || 0) + 1 }));
       }
     } catch (err) {
       console.error('Follow error:', err);
@@ -74,17 +74,20 @@ export default function ProfilePage() {
   };
 
   if (loading) return <LoadingSpinner text="Loading profile..." />;
-  if (!profile) return <EmptyState icon="👤" title="User not found" />;
+  if (!profile) return <div className="page-container" style={{ maxWidth: '800px' }}><EmptyState icon="👤" title="User not found" /></div>;
 
   const skills = parseSkills(profile.skills);
+  const handle = profile.email ? `@${profile.email.split('@')[0]}` : `@user${profile.id}`;
 
   return (
-    <div className="page-container" style={{ maxWidth: '800px' }}>
+    <div className="page-container" style={{ maxWidth: '860px' }}>
       <div className="profile-header slide-up">
+        <div className="profile-cover" />
         <div className="profile-info">
           <Avatar src={profile.profile_image} name={profile.name} size="2xl" />
           <div className="profile-details">
             <h1 className="profile-name">{profile.name}</h1>
+            <div className="profile-handle">{handle}</div>
             {profile.bio && <p className="profile-bio">{profile.bio}</p>}
 
             <div className="profile-stats">
@@ -109,12 +112,12 @@ export default function ProfilePage() {
             <div className="profile-links">
               {profile.github_url && (
                 <a href={profile.github_url} target="_blank" rel="noopener noreferrer" className="profile-link">
-                  🔗 GitHub
+                  ⚡ GitHub
                 </a>
               )}
               {profile.linkedin_url && (
                 <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="profile-link">
-                  🔗 LinkedIn
+                  💼 LinkedIn
                 </a>
               )}
             </div>
@@ -127,11 +130,16 @@ export default function ProfilePage() {
               </div>
             )}
 
-            <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
+            <div style={{ marginTop: '18px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {isOwnProfile ? (
-                <button className="btn btn-secondary" onClick={() => navigate('/edit-profile')}>
-                  ✏️ Edit Profile
-                </button>
+                <>
+                  <button className="btn btn-primary" onClick={() => navigate('/edit-profile')}>
+                    My Profile · Edit
+                  </button>
+                  <button className="btn btn-secondary" onClick={() => navigate('/projects')}>
+                    My Projects
+                  </button>
+                </>
               ) : (
                 <button
                   className={`btn ${isFollowing ? 'btn-secondary' : 'btn-primary'}`}
@@ -159,16 +167,18 @@ export default function ProfilePage() {
       {/* Tab Content */}
       {activeTab === 'posts' && (
         posts.length === 0 ? (
-          <EmptyState icon="📝" title="No posts yet" description={isOwnProfile ? 'Share your first post!' : 'This developer hasn\'t posted yet.'} />
+          <EmptyState icon="📝" title="No posts yet" description={isOwnProfile ? 'Share your first post from the feed!' : 'This developer hasn\'t posted yet.'} />
         ) : (
-          posts.map(post => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onPostUpdated={handlePostUpdated}
-              onPostDeleted={handlePostDeleted}
-            />
-          ))
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {posts.map(post => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onPostUpdated={handlePostUpdated}
+                onPostDeleted={handlePostDeleted}
+              />
+            ))}
+          </div>
         )
       )}
 

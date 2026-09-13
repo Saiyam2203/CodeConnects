@@ -36,12 +36,12 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <div className="auth-card slide-up">
-        <Link to="/" className="navbar-brand" style={{ justifyContent: 'center', marginBottom: '24px' }}>
-          <div className="brand-icon">⚡</div>
-          CodeConnects
+        <Link to="/" className="auth-brand">
+          <span className="brand-icon" style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #1899f2, #0c85d8)', borderRadius: '11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '15px' }}>&lt;/&gt;</span>
+          CodeConnect
         </Link>
-        <h1 className="auth-title">Welcome Back</h1>
-        <p className="auth-subtitle">Log in to your developer account</p>
+        <h1 className="auth-title">Welcome back 👋</h1>
+        <p className="auth-subtitle">Log in to catch up with your dev community</p>
 
         {error && <ErrorMessage message={error} />}
 
@@ -80,7 +80,7 @@ export default function LoginPage() {
         </form>
 
         <div className="auth-footer">
-          Don't have an account? <Link to="/register">Sign up</Link>
+          New to CodeConnect? <Link to="/register">Create an account</Link>
         </div>
       </div>
     </div>

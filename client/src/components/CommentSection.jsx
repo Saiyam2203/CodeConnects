@@ -54,7 +54,7 @@ export default function CommentSection({ postId, onCommentCountChange }) {
   };
 
   if (loading) {
-    return <div className="comments-section"><div className="spinner spinner-sm" style={{ margin: '16px auto' }} /></div>;
+    return <div className="comments-section"><div className="spinner spinner-sm" style={{ margin: '12px auto' }} /></div>;
   }
 
   return (
@@ -73,6 +73,7 @@ export default function CommentSection({ postId, onCommentCountChange }) {
                   className="btn btn-ghost btn-sm"
                   onClick={() => handleDelete(comment.id)}
                   style={{ padding: '2px 6px', fontSize: '12px' }}
+                  title="Delete comment"
                 >
                   🗑️
                 </button>
@@ -84,12 +85,14 @@ export default function CommentSection({ postId, onCommentCountChange }) {
       ))}
 
       <form className="comment-input" onSubmit={handleSubmit}>
+        <Avatar src={user?.profile_image} name={user?.name} size="sm" />
         <input
           type="text"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Write a comment..."
+          placeholder="Write your comment..."
           disabled={submitting}
+          aria-label="Write a comment"
         />
         <button className="btn btn-primary btn-sm" type="submit" disabled={submitting || !newComment.trim()}>
           {submitting ? '...' : 'Post'}

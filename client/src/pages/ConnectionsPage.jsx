@@ -42,9 +42,12 @@ export default function ConnectionsPage() {
   const currentList = activeTab === 'followers' ? followers : following;
 
   return (
-    <div className="page-container" style={{ maxWidth: '700px' }}>
+    <div className="page-container" style={{ maxWidth: '760px' }}>
       <div className="page-header">
-        <h1 className="page-title">My Network</h1>
+        <div>
+          <h1 className="page-title">My Network</h1>
+          <p className="page-subtitle">Developers you follow and who follow you.</p>
+        </div>
       </div>
 
       <div className="tabs">
